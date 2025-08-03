@@ -1,1 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高一數學：實數</title>
+  <!-- 引入 Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入 Inter 字體 -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-4">
+
+  <!-- Main container for the entire application -->
+  <div id="root" class="flex flex-col items-center justify-center min-h-screen font-sans text-gray-800">
+    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 space-y-6">
+
+      <!-- Header with page title -->
+      <h1 class="text-2xl md:text-3xl font-bold text-center text-blue-600 border-b-2 pb-4">
+        高一數學：實數
+      </h1>
+      
+      <!-- Placeholder for dynamic page content -->
+      <div id="page-content"></div>
+      
+      <!-- Navigation buttons at the bottom -->
+      <div id="navigation-buttons" class="flex justify-between mt-8 pt-4 border-t-2">
+        <button id="prev-page-btn" class="px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+          上一頁
+        </button>
+        <div id="reset-button-container"></div>
+        <button id="next-page-btn" class="px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+          下一頁
+        </button>
+      </div>
+    </div>
+    
+    <!-- Feedback section, persistent on all pages -->
+    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 space-y-4 mt-8">
+      <h2 class="text-xl md:text-2xl font-semibold text-gray-700 text-center">問題回報區</h2>
+      <p class="text-base text-gray-600 leading-relaxed text-center">
+        如果您在使用本講義時遇到任何問題或有任何建議，歡迎點擊下方的按鈕回報。
+      </p>
+      <div class="text-center">
+        <a
+          href="https://junyiacademy.notion.site/2408e22e5164806a92add742b3936fdf?pvs=105"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block px-8 py-3 mt-4 bg-purple-600 text-white font-semibold rounded-lg shadow-lg hover:bg-purple-700 transition-all duration-300 active:scale-95"
+        >
+          前往回報
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript logic for handling pages and interactions
+    let currentPage = 1;
+    const maxPage = 7;
+    const pageContentDiv = document.getElementById('page-content');
+    const prevPageBtn = document.getElementById('prev-page-btn');
+    const nextPageBtn = document.getElementById('next-page-btn');
+    const resetButtonContainer = document.getElementById('reset-button-container');
+
+    // Function to handle quiz selections
+    function handleSelect(page, option) {
+      let feedback = '';
+      let correctAnswer = '';
+      
+      if (page === 2) {
+        correctAnswer = 'B';
+        if (option === correctAnswer) {
+          feedback = '答對了！有理數可以表示為分數，像 1.75 可以寫成 7/4。';
+        } else {
+          feedback = '再想一想喔！√3是一個無限不循環小數，無法寫成分數形式。';
+        }
+      } else if (page === 3) {
+        correctAnswer = 'A';
+        if (option === correctAnswer) {
+          feedback = '答對了！例如 5 除以 2 等於 2.5，結果不再是整數。';
+        } else {
+          feedback = '再試一次。兩個整數相加的結果永遠是整數。';
+        }
+      } else if (page === 4) {
+        correctAnswer = 'B';
+        if (option === correctAnswer) {
+          feedback = '答對了！√2是無理數，是無限不循環小數。';
+        } else {
+          feedback = '再試一次。1.232323...是循環小數，因此可以寫成分數，是有理數。';
+        }
+      } else if (page === 5) {
+        correctAnswer = 'A';
+        if (option === correctAnswer) {
+          feedback = '答對了！圓內冪性質可以幫助我們畫出開平方根的線段長度。';
+        } else {
+          feedback = '再試一次。圓內冪性質主要應用在幾何作圖，通常用於構造平方根長度。';
+        }
+      } else if (page === 6) {
+        correctAnswer = 'B';
+        if (option === correctAnswer) {
+          feedback = '答對了！實數包含有理數與無理數，所以有理數都是實數。';
+        } else {
+          feedback = '再試一次。√2是實數，但它不是有理數。';
+        }
+      }
+      
+      // Re-render the page with feedback
+      renderPage(currentPage, option, feedback, correctAnswer);
+    }
+
+    // Function to render the content for a specific page
+    function renderPage(page, selectedOption = null, feedbackText = '', correctAns = '') {
+      let pageHtml = '';
+      switch(page) {
+        case 1:
+          pageHtml = `
+            <div class="space-y-4">
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">第一章：實數概述</h2>
+              <p class="text-base text-gray-600 leading-relaxed">
+                本章將帶領我們回到數學的起源，探索人類如何一步步地發展出各種數系。我們將從最基礎的<span class="text-red-600 font-bold">自然數</span>與<span class="text-red-600 font-bold">整數</span>開始，學習它們在數線上的表示與運算。接著，我們會深入了解<span class="text-red-600 font-bold">有理數</span>，包含分數與小數的各種形式。
+              </p>
+              <p class="text-base text-gray-600 leading-relaxed">
+                隨後，我們將從畢氏定理的啟發，認識到一個新的數系：<span class="text-red-600 font-bold">無理數</span>。我們將以√2為例，探討其<span class="text-red-600 font-bold">無限不循環小數</span>的特性，並學習如何利用尺規作圖在數線上標示出平方根的位置，甚至計算其近似值。
+              </p>
+              <p class="text-base text-gray-600 leading-relaxed">
+                最後，我們會將所有學過的數系統整起來，形成一個完整的<span class="text-red-600 font-bold">實數</span>系統，並探討<span class="text-red-600 font-bold">實數</span>在數線上的特性與其四則運算規則。
+              </p>
+            </div>
+          `;
+          break;
+        case 2:
+          const options2 = ['A. √3', 'B. 1.75'];
+          pageHtml = `
+            <div class="space-y-4">
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">暖身：有理數</h2>
+              <p class="text-base text-gray-600 leading-relaxed">
+                從最簡單的<span class="text-red-600 font-bold">自然數</span>（數數的數字）到<span class="text-red-600 font-bold">整數</span>（包含負數與零），我們的數系不斷擴展。<span class="text-red-600 font-bold">有理數</span>就是那些可以表示成兩個<span class="text-red-600 font-bold">整數</span>之比（分數）的數。它們可以是有限小數、無限循環小數。
+              </p>
+              
+              <div class="bg-gray-50 p-4 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-2">互動題：</h3>
+                <p class="font-semibold text-gray-700 mb-4">以下哪一個數是<span class="text-red-600 font-bold">有理數</span>？</p>
+                <div class="space-y-2">
+                  ${options2.map(option => `
+                    <button 
+                      onclick="handleSelect(2, '${option.charAt(0)}')"` +
+                      `class="w-full text-left p-3 rounded-md transition-all duration-200 border-2 ` +
+                      `${selectedOption === option.charAt(0) ? 
+                        (option.charAt(0) === correctAns ? 'bg-green-200 border-green-500' : 'bg-red-200 border-red-500') : 
+                        'bg-white hover:bg-gray-100 border-gray-300'}` + `">
+                      <span class="font-mono">${option}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                ${feedbackText ? `
+                  <p class="mt-4 font-medium p-3 rounded-md ${selectedOption === correctAns ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">
+                    ${feedbackText}
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+          `;
+          break;
+        case 3:
+          const options3 = ['A. 相除', 'B. 相加'];
+          pageHtml = `
+            <div class="space-y-4">
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">觀念：有理數的特性</h2>
+              <p class="text-base text-gray-600 leading-relaxed">
+                有理數對於加減乘除（分母不為零）都具有<span class="text-red-600 font-bold">封閉性</span>，意思是兩個有理數運算後的結果依然是有理數。在數線上，有理數是<span class="text-red-600 font-bold">稠密</span>的，任何兩個有理數之間都存在無限多個有理數。
+              </p>
+              <p class="text-base text-gray-600 leading-relaxed">
+                與此對應的是，<span class="text-red-600 font-bold">整數</span>在數線上是<span class="text-red-600 font-bold">離散</span>的，任兩個相鄰<span class="text-red-600 font-bold">整數</span>之間沒有其他<span class="text-red-600 font-bold">整數</span>。
+              </p>
+              
+              <div class="bg-gray-50 p-4 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-2">互動題：</h3>
+                <p class="font-semibold text-gray-700 mb-4">下列哪一個運算可能會讓兩個<span class="text-red-600 font-bold">整數</span>的結果不再是<span class="text-red-600 font-bold">整數</span>？</p>
+                <div class="space-y-2">
+                  ${options3.map(option => `
+                    <button 
+                      onclick="handleSelect(3, '${option.charAt(0)}')"` +
+                      `class="w-full text-left p-3 rounded-md transition-all duration-200 border-2 ` +
+                      `${selectedOption === option.charAt(0) ? 
+                        (option.charAt(0) === correctAns ? 'bg-green-200 border-green-500' : 'bg-red-200 border-red-500') : 
+                        'bg-white hover:bg-gray-100 border-gray-300'}` + `">
+                      <span class="font-mono">${option}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                ${feedbackText ? `
+                  <p class="mt-4 font-medium p-3 rounded-md ${selectedOption === correctAns ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">
+                    ${feedbackText}
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+          `;
+          break;
+        case 4:
+          const options4 = ['A. 1.232323...', 'B. √2'];
+          pageHtml = `
+            <div class="space-y-4">
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">暖身：無理數 √2</h2>
+              <p class="text-base text-gray-600 leading-relaxed">
+                <span class="text-red-600 font-bold">無理數</span>是無法表示為兩個<span class="text-red-600 font-bold">整數</span>之比的數，它們的小數部分是<span class="text-red-600 font-bold">無限不循環</span>的。最著名的<span class="text-red-600 font-bold">無理數</span>之一就是**√2**。
+              </p>
+              <p class="text-base text-gray-600 leading-relaxed">
+                我們可以用<span class="text-red-600 font-bold">反證法</span>證明√2不是有理數，也就是說，假設√2是一個有理數，最後會得到矛盾的結果。在生活中，A4 紙的長寬比也與√2有關喔。
+              </p>
+
+              <div class="bg-gray-50 p-4 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-2">互動題：</h3>
+                <p class="font-semibold text-gray-700 mb-4">下列哪一個數是<span class="text-red-600 font-bold">無理數</span>？</p>
+                <div class="space-y-2">
+                  ${options4.map(option => `
+                    <button 
+                      onclick="handleSelect(4, '${option.charAt(0)}')"` +
+                      `class="w-full text-left p-3 rounded-md transition-all duration-200 border-2 ` +
+                      `${selectedOption === option.charAt(0) ? 
+                        (option.charAt(0) === correctAns ? 'bg-green-200 border-green-500' : 'bg-red-200 border-red-500') : 
+                        'bg-white hover:bg-gray-100 border-gray-300'}` + `">
+                      <span class="font-mono">${option}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                ${feedbackText ? `
+                  <p class="mt-4 font-medium p-3 rounded-md ${selectedOption === correctAns ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">
+                    ${feedbackText}
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+          `;
+          break;
+        case 5:
+          const options5 = ['A. √15', 'B. 15/2'];
+          pageHtml = `
+            <div class="space-y-4">
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">觀念：平方根的作圖與計算</h2>
+              <p class="text-base text-gray-600 leading-relaxed">
+                我們可以使用<span class="text-red-600 font-bold">畢氏定理</span>（a的平方加b的平方等於c的平方）或<span class="text-red-600 font-bold">圓內冪性質</span>（從半圓中的弦長來構造）在數線上準確地畫出**√n**的位置。
+              </p>
+              <p class="text-base text-gray-600 leading-relaxed">
+                如果我們需要計算**√n**的近似值，則可以使用<span class="text-red-600 font-bold">十分逼近法</span>，透過不斷縮小範圍來找到其小數點後的數值。
+              </p>
+
+              <div class="bg-gray-50 p-4 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-2">互動題：</h3>
+                <p class="font-semibold text-gray-700 mb-4">我們可以用<span class="text-red-600 font-bold">圓內冪性質</span>來畫出哪一種數的長度？</p>
+                <div class="space-y-2">
+                  ${options5.map(option => `
+                    <button 
+                      onclick="handleSelect(5, '${option.charAt(0)}')"` +
+                      `class="w-full text-left p-3 rounded-md transition-all duration-200 border-2 ` +
+                      `${selectedOption === option.charAt(0) ? 
+                        (option.charAt(0) === correctAns ? 'bg-green-200 border-green-500' : 'bg-red-200 border-red-500') : 
+                        'bg-white hover:bg-gray-100 border-gray-300'}` + `">
+                      <span class="font-mono">${option}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                ${feedbackText ? `
+                  <p class="mt-4 font-medium p-3 rounded-md ${selectedOption === correctAns ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">
+                    ${feedbackText}
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+          `;
+          break;
+        case 6:
+          const options6 = ['A. 所有實數都是有理數', 'B. 所有有理數都是實數'];
+          pageHtml = `
+            <div class="space-y-4">
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">暖身：實數總整理</h2>
+              <p class="text-base text-gray-600 leading-relaxed">
+                將所有<span class="text-red-600 font-bold">有理數</span>與<span class="text-red-600 font-bold">無理數</span>合在一起，就形成了我們所稱的<span class="text-red-600 font-bold">實數</span>。實數完整地填滿了數線，每一個點都代表一個實數，反之亦然。
+              </p>
+              <p class="text-base text-gray-600 leading-relaxed">
+                實數也具備許多重要的運算性質，例如：
+              </p>
+              <ul class="list-disc list-inside mt-2 space-y-1 text-base text-gray-600 leading-relaxed">
+                <li>加法與乘法的<span class="text-red-600 font-bold">交換律</span>：a + b = b + a</li>
+                <li>加法與乘法的<span class="text-red-600 font-bold">結合律</span>：(a + b) + c = a + (b + c)</li>
+                <li>乘法對加法的<span class="text-red-600 font-bold">分配律</span>：a(b + c) = ab + ac</li>
+              </ul>
+
+              <div class="bg-gray-50 p-4 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-2">互動題：</h3>
+                <p class="font-semibold text-gray-700 mb-4">下列哪一個敘述正確？</p>
+                <div class="space-y-2">
+                  ${options6.map(option => `
+                    <button 
+                      onclick="handleSelect(6, '${option.charAt(0)}')"` +
+                      `class="w-full text-left p-3 rounded-md transition-all duration-200 border-2 ` +
+                      `${selectedOption === option.charAt(0) ? 
+                        (option.charAt(0) === correctAns ? 'bg-green-200 border-green-500' : 'bg-red-200 border-red-500') : 
+                        'bg-white hover:bg-gray-100 border-gray-300'}` + `">
+                      <span class="font-mono">${option}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                ${feedbackText ? `
+                  <p class="mt-4 font-medium p-3 rounded-md ${selectedOption === correctAns ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">
+                    ${feedbackText}
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+          `;
+          break;
+        case 7:
+          pageHtml = `
+            <div class="space-y-4 flex flex-col items-center text-center">
+              <h2 class="text-xl md:text-2xl font-semibold text-gray-700">恭喜！你已經完成本章內容！</h2>
+              <img
+                src="https://raw.githubusercontent.com/carina-junyi/online_worksheet/main/cat_fox.png"
+                alt="手繪 造型 狐狸貓(花花)"
+                class="w-48 h-48 rounded-full object-cover shadow-lg mx-auto my-4"
+              />
+              <p class="text-base text-gray-600 leading-relaxed max-w-lg">
+                這只是你數學學習旅程中的一站，希望你已經對本章有了更清楚的認識。
+                <br /><br />
+                接下來的內容會更加精彩，也別忘了持續保持好奇與動力！
+                <span class="block mt-2">💪 相信自己，你一定能夠學會並運用這個章節的知識！</span>
+              </p>
+            </div>
+          `;
+          break;
+        default:
+          pageHtml = `<p>頁面內容錯誤。</p>`;
+          break;
+      }
+      pageContentDiv.innerHTML = pageHtml;
+      updateNavigation();
+    }
+
+    // Function to update the state of navigation buttons
+    function updateNavigation() {
+      // Update the previous button's state
+      if (currentPage === 1) {
+        prevPageBtn.disabled = true;
+        prevPageBtn.classList.remove('bg-blue-500', 'text-white', 'hover:bg-blue-600', 'active:scale-95');
+        prevPageBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+      } else {
+        prevPageBtn.disabled = false;
+        prevPageBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        prevPageBtn.classList.add('bg-blue-500', 'text-white', 'hover:bg-blue-600', 'active:scale-95');
+      }
+      
+      // Update the next button's state
+      if (currentPage === maxPage) {
+        nextPageBtn.disabled = true;
+        nextPageBtn.classList.remove('bg-blue-500', 'text-white', 'hover:bg-blue-600', 'active:scale-95');
+        nextPageBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+      } else {
+        nextPageBtn.disabled = false;
+        nextPageBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        nextPageBtn.classList.add('bg-blue-500', 'text-white', 'hover:bg-blue-600', 'active:scale-95');
+      }
+
+      // Conditionally show or hide the reset button
+      if (currentPage === maxPage) {
+        resetButtonContainer.innerHTML = `
+          <button id="reset-page-btn" onclick="resetToFirstPage()" class="px-6 py-2 rounded-lg font-semibold bg-green-500 text-white hover:bg-green-600 active:scale-95 transition-all duration-300">
+            回到第一頁
+          </button>
+        `;
+      } else {
+        resetButtonContainer.innerHTML = '';
+      }
+    }
+
+    // Navigation function implementations
+    function nextPage() {
+      if (currentPage < maxPage) {
+        currentPage++;
+        renderPage(currentPage);
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPage(currentPage);
+      }
+    }
+
+    function resetToFirstPage() {
+      currentPage = 1;
+      renderPage(currentPage);
+    }
+
+    // Add event listeners for the navigation buttons
+    prevPageBtn.addEventListener('click', prevPage);
+    nextPageBtn.addEventListener('click', nextPage);
+
+    // Initial render when the page loads
+    window.onload = () => {
+      renderPage(currentPage);
+    };
+  </script>
+
+</body>
+</html>
 
