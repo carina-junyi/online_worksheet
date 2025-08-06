@@ -12,6 +12,51 @@
     body {
       font-family: 'Inter', sans-serif;
     }
+    /* Custom style for stacked fraction */
+    .stacked-fraction {
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+    }
+    .stacked-fraction > span {
+      display: block;
+      line-height: 1;
+    }
+    .stacked-fraction .numerator {
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+    .stacked-fraction .denominator {
+      padding-top: 1px;
+    }
+    /* Style for details/summary to make them look like the original grey box */
+    details {
+      background-color: #f3f4f6; /* bg-gray-100 */
+      padding: 1rem; /* p-4 */
+      border-radius: 0.5rem; /* rounded-lg */
+      border: 1px solid #e5e7eb; /* border border-gray-200 */
+      margin-top: 1rem; /* mt-4 */
+    }
+    summary {
+      font-weight: 600; /* font-semibold */
+      cursor: pointer;
+      outline: none; /* Remove default focus outline */
+      padding-bottom: 0.5rem; /* Add some padding below summary text */
+      list-style: none; /* Ensure no default list marker */
+    }
+    summary::-webkit-details-marker {
+      display: none; /* Hide default triangle marker for WebKit browsers */
+    }
+    /* For Firefox and other browsers, list-style: none on summary should handle it */
+    summary::before {
+      content: '▶ '; /* Custom triangle marker */
+      display: inline-block;
+      margin-right: 0.5rem;
+      transition: transform 0.2s ease-in-out;
+    }
+    details[open] summary::before {
+      transform: rotate(90deg);
+    }
   </style>
 </head>
 <body class="bg-gray-100 p-4">
@@ -92,14 +137,14 @@
         if (option === correctAnswer) {
           feedback = '答對了！√2是無理數，是無限不循環小數。';
         } else {
-          feedback = '再試一次。1.232323...是循環小數，因此可以寫成分數，是有理數。';
+          feedback = '再想一想喔！1.232323...是循環小數，因此可以寫成分數，是有理數。';
         }
       } else if (page === 5) {
         correctAnswer = 'A';
         if (option === correctAnswer) {
-          feedback = '答對了！圓內冪性質可以幫助我們畫出開平方根的線段長度。';
+          feedback = '答對了！母子相似性質可以幫助我們畫出開平方根的線段長度。';
         } else {
-          feedback = '再試一次。圓內冪性質主要應用在幾何作圖，通常用於構造平方根長度。';
+          feedback = '再試一次。母子相似性質主要應用在幾何作圖，通常用於構造平方根長度。';
         }
       } else if (page === 6) {
         correctAnswer = 'B';
@@ -138,12 +183,28 @@
           const options2 = ['A. √3', 'B. 1.75'];
           pageHtml = `
             <div class="space-y-4">
-              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">暖身：有理數</h2>
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">有理數</h2>
               <p class="text-base text-gray-600 leading-relaxed">
-                從最簡單的<span class="text-red-600 font-bold">自然數</span>（數數的數字）到<span class="text-red-600 font-bold">整數</span>（包含負數與零），我們的數系不斷擴展。<span class="text-red-600 font-bold">有理數</span>就是那些可以表示成兩個<span class="text-red-600 font-bold">整數</span>之比（分數）的數。它們可以是有限小數、無限循環小數。
+                從最簡單的<span class="text-red-600 font-bold">自然數</span>（數數的數字）到<span class="text-red-600 font-bold">整數</span>（包含負數與零），我們的數系不斷擴展。<span class="text-red-600 font-bold">有理數</span>就是那些可以表示成兩個<span class="text-red-600 font-bold">整數</span>之比（分母不為零）的數。它們可以是有限小數、無限循環小數。
               </p>
+              <p class="text-base text-gray-600 leading-relaxed">
+                你可能會好奇，為什麼<span class="text-red-600 font-bold">無限循環小數</span>也是有理數呢？這是因為它們可以被轉換成分數形式！
+              </p>
+              <details>
+                <summary>範例：如何證明 0.1232323... 是有理數？</summary>
+                <p class="text-sm font-mono leading-relaxed mt-2">
+                  令 x = 0.1232323... (1)<br>
+                  10x = 1.232323... (2) (將小數點移到循環節前)<br>
+                  1000x = 123.232323... (3) (將小數點移到第一個循環節後)<br>
+                  將 (3) 式減去 (2) 式：<br>
+                  1000x - 10x = 123.232323... - 1.232323...<br>
+                  990x = 122<br>
+                  x = <span class="stacked-fraction"><span class="numerator">122</span><span class="denominator">990</span></span><br>
+                  因此，0.1232323... 是一個有理數。
+                </p>
+              </details>
               
-              <div class="bg-gray-50 p-4 rounded-lg shadow">
+              <div class="bg-gray-50 p-4 rounded-lg shadow mt-4">
                 <h3 class="text-lg font-bold mb-2">互動題：</h3>
                 <p class="font-semibold text-gray-700 mb-4">以下哪一個數是<span class="text-red-600 font-bold">有理數</span>？</p>
                 <div class="space-y-2">
@@ -171,7 +232,7 @@
           const options3 = ['A. 相除', 'B. 相加'];
           pageHtml = `
             <div class="space-y-4">
-              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">觀念：有理數的特性</h2>
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">有理數的特性</h2>
               <p class="text-base text-gray-600 leading-relaxed">
                 有理數對於加減乘除（分母不為零）都具有<span class="text-red-600 font-bold">封閉性</span>，意思是兩個有理數運算後的結果依然是有理數。在數線上，有理數是<span class="text-red-600 font-bold">稠密</span>的，任何兩個有理數之間都存在無限多個有理數。
               </p>
@@ -195,7 +256,7 @@
                   `).join('')}
                 </div>
                 ${feedbackText ? `
-                  <p class="mt-4 font-medium p-3 rounded-md ${selectedOption === correctAns ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">
+                  <p class="mt-4 font-medium p-3 rounded-md ${selectedOption === correctAns ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}'>
                     ${feedbackText}
                   </p>
                 ` : ''}
@@ -207,12 +268,27 @@
           const options4 = ['A. 1.232323...', 'B. √2'];
           pageHtml = `
             <div class="space-y-4">
-              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">暖身：無理數 √2</h2>
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">無理數 √2</h2>
               <p class="text-base text-gray-600 leading-relaxed">
-                <span class="text-red-600 font-bold">無理數</span>是無法表示為兩個<span class="text-red-600 font-bold">整數</span>之比的數，它們的小數部分是<span class="text-red-600 font-bold">無限不循環</span>的。最著名的<span class="text-red-600 font-bold">無理數</span>之一就是**√2**。
+                <span class="text-red-600 font-bold">無理數</span>是無法表示為兩個<span class="text-red-600 font-bold">整數</span>之比的數，它們的小數部分是<span class="text-red-600 font-bold">無限不循環</span>的。最著名的<span class="text-red-600 font-bold">無理數</span>之一就是√2。
               </p>
-              <p class="text-base text-gray-600 leading-relaxed">
-                我們可以用<span class="text-red-600 font-bold">反證法</span>證明√2不是有理數，也就是說，假設√2是一個有理數，最後會得到矛盾的結果。在生活中，A4 紙的長寬比也與√2有關喔。
+              <details>
+                <summary>反證法證明 √2 是無理數：</summary>
+                <p class="text-sm leading-relaxed mt-2">
+                  假設 √2 是一個<span class="text-red-600 font-bold">有理數</span>，那麼它可以表示為最簡分數 <span class="stacked-fraction"><span class="numerator">p</span><span class="denominator">q</span></span>，其中 p 和 q 互質，且 q ≠ 0。<br><br>
+                  1. 假設 √2 = <span class="stacked-fraction"><span class="numerator">p</span><span class="denominator">q</span></span> (p, q 為互質<span class="text-red-600 font-bold">整數</span>，q ≠ 0)<br>
+                  2. 兩邊平方：2 = <span class="stacked-fraction"><span class="numerator">p²</span><span class="denominator">q²</span></span><br>
+                  3. 移項得：p² = 2q²<br>
+                  4. 這表示 p² 是偶數，因此 p 也是偶數 (因為奇數的平方是奇數)。<br>
+                  5. 既然 p 是偶數，我們可以設 p = 2k (k 為<span class="text-red-600 font-bold">整數</span>)。<br>
+                  6. 將 p = 2k 代入 p² = 2q²：(2k)² = 2q² → 4k² = 2q² → 2k² = q²<br>
+                  7. 這表示 q² 是偶數，因此 q 也是偶數。<br><br>
+                  8. 結論：我們推導出 p 和 q 都是偶數。這與我們最初的假設「p 和 q 互質」相矛盾。<br>
+                  因此，最初的假設是錯誤的，√2 不是<span class="text-red-600 font-bold">有理數</span>，它是一個<span class="text-red-600 font-bold">無理數</span>。
+                </p>
+              </details>
+              <p class="text-base text-gray-600 leading-relaxed mt-4">
+                在生活中，A4 紙的長寬比也與√2有關喔。A4 紙的設計使得將其長邊對半裁切後，所得的兩張新紙張（A5）的長寬比仍然與 A4 紙相同，這就是為了保持視覺上的比例一致性。這個特殊的比例就是 1 : √2。
               </p>
 
               <div class="bg-gray-50 p-4 rounded-lg shadow">
@@ -243,17 +319,27 @@
           const options5 = ['A. √15', 'B. 15/2'];
           pageHtml = `
             <div class="space-y-4">
-              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">觀念：平方根的作圖與計算</h2>
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">平方根的作圖與計算</h2>
               <p class="text-base text-gray-600 leading-relaxed">
-                我們可以使用<span class="text-red-600 font-bold">畢氏定理</span>（a的平方加b的平方等於c的平方）或<span class="text-red-600 font-bold">圓內冪性質</span>（從半圓中的弦長來構造）在數線上準確地畫出**√n**的位置。
+                我們可以使用<span class="text-red-600 font-bold">畢氏定理</span>（a² + b² = c²）或<span class="text-red-600 font-bold">母子相似性質</span>在數線上準確地畫出√n的位置。
               </p>
-              <p class="text-base text-gray-600 leading-relaxed">
-                如果我們需要計算**√n**的近似值，則可以使用<span class="text-red-600 font-bold">十分逼近法</span>，透過不斷縮小範圍來找到其小數點後的數值。
+              <details>
+                <summary>利用母子相似性質作圖說明：</summary>
+                <p class="text-sm leading-relaxed mt-2">
+                  在半圓中，若從直徑上的一點作垂直於直徑的弦，則這條高（h）的長度會是它在直徑上所分成的兩段（p和q）的幾何平均數。
+                  <br>
+                  也就是說，高² = 兩投影段相乘，即 h² = p × q，因此 h = √pq。
+                  <br><br>
+                  例如，要作圖 √5，我們可以將直徑分為長度為 1 和 5 的兩段，則高即為 √5。
+                </p>
+              </details>
+              <p class="text-base text-gray-600 leading-relaxed mt-4">
+                如果我們需要計算√n的近似值，則可以使用<span class="text-red-600 font-bold">十分逼近法</span>，透過不斷縮小範圍來找到其小數點後的數值。
               </p>
 
               <div class="bg-gray-50 p-4 rounded-lg shadow">
                 <h3 class="text-lg font-bold mb-2">互動題：</h3>
-                <p class="font-semibold text-gray-700 mb-4">我們可以用<span class="text-red-600 font-bold">圓內冪性質</span>來畫出哪一種數的長度？</p>
+                <p class="font-semibold text-gray-700 mb-4">我們可以用<span class="text-red-600 font-bold">母子相似性質</span>來畫出哪一種數的長度？</p>
                 <div class="space-y-2">
                   ${options5.map(option => `
                     <button 
@@ -279,7 +365,7 @@
           const options6 = ['A. 所有實數都是有理數', 'B. 所有有理數都是實數'];
           pageHtml = `
             <div class="space-y-4">
-              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">暖身：實數總整理</h2>
+              <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">實數總整理</h2>
               <p class="text-base text-gray-600 leading-relaxed">
                 將所有<span class="text-red-600 font-bold">有理數</span>與<span class="text-red-600 font-bold">無理數</span>合在一起，就形成了我們所稱的<span class="text-red-600 font-bold">實數</span>。實數完整地填滿了數線，每一個點都代表一個實數，反之亦然。
               </p>
@@ -321,7 +407,7 @@
             <div class="space-y-4 flex flex-col items-center text-center">
               <h2 class="text-xl md:text-2xl font-semibold text-gray-700">恭喜！你已經完成本章內容！</h2>
               <img
-                src="https://raw.githubusercontent.com/carina-junyi/online_worksheet/main/cat_fox.png"
+                src="https://googleusercontent.com/file_content/1"
                 alt="手繪 造型 狐狸貓(花花)"
                 class="w-48 h-48 rounded-full object-cover shadow-lg mx-auto my-4"
               />
