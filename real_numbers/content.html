@@ -133,9 +133,10 @@
           feedback = '再試一次。兩個整數相加的結果永遠是整數。';
         }
       } else if (page === 4) {
-        correctAnswer = 'B';
+        // Updated for the new question on Page 4
+        correctAnswer = 'B'; // Assuming π is the correct answer for the new question
         if (option === correctAnswer) {
-          feedback = '答對了！√2是無理數，是無限不循環小數。';
+          feedback = '答對了！π是一個無限不循環小數，是無理數。';
         } else {
           feedback = '再想一想喔！1.232323...是循環小數，因此可以寫成分數，是有理數。';
         }
@@ -265,7 +266,8 @@
           `;
           break;
         case 4:
-          const options4 = ['A. 1.232323...', 'B. √2'];
+          // Updated options for Page 4
+          const options4 = ['A. 1.232323...', 'B. π'];
           pageHtml = `
             <div class="space-y-4">
               <h2 class="text-xl md:text-2xl font-semibold text-center text-gray-700">無理數 √2</h2>
@@ -328,7 +330,7 @@
                 <p class="text-sm leading-relaxed mt-2">
                   在半圓中，若從直徑上的一點作垂直於直徑的弦，則這條高（h）的長度會是它在直徑上所分成的兩段（p和q）的幾何平均數。
                   <br>
-                  也就是說，高² = 兩投影段相乘，即 h² = p × q，因此 h = √pq。
+                  也就是說，**高² = 兩投影段相乘**，即 h² = p × q，因此 h = √pq。
                   <br><br>
                   例如，要作圖 √5，我們可以將直徑分為長度為 1 和 5 的兩段，則高即為 √5。
                 </p>
@@ -407,7 +409,7 @@
             <div class="space-y-4 flex flex-col items-center text-center">
               <h2 class="text-xl md:text-2xl font-semibold text-gray-700">恭喜！你已經完成本章內容！</h2>
               <img
-                src="https://googleusercontent.com/file_content/1"
+                src="https://raw.githubusercontent.com/carina-junyi/online_worksheet/main/cat_fox.png"
                 alt="手繪 造型 狐狸貓(花花)"
                 class="w-48 h-48 rounded-full object-cover shadow-lg mx-auto my-4"
               />
