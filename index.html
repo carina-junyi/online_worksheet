@@ -5,6 +5,8 @@ window.onload = function() {
   // 根據 hash 決定要導向的頁面
   if (hash === "#real_numbers") {
     window.location.replace("/online_worksheet/real_numbers/content.html");
+  } else if (hash === "#real_numbers_interactive") {
+    window.location.replace("/online_worksheet/real_numbers/content_interactive.html");
   } else {
     // 預設頁面
     window.location.replace("/online_worksheet/index.html");
@@ -16,5 +18,6 @@ window.onload = function() {
 例如：https://carina-junyi.github.io/online_worksheet#real_numbers
 
 列表如下：
-real_numbers：高一_實數
+real_numbers：高一_實數講義
+real_numbers_interactive：高一_實數_互動操作講義
 </pre>
